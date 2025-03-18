@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultOutput = document.getElementById("resultOutput");
 
     numberInput.addEventListener("input", function () {
-        let inputValue = parseFloat(numberInput.value) || 0; // Ensure it's a number
+        let inputValue = parseFloat(numberInput.value) || 0;
         resultOutput.value = inputValue * 2;
     });
 });

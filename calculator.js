@@ -36,10 +36,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     console.log("successfully validated entries")
-    
     let calculator = new Calculator(argumentsAndOperators);
+
+    console.log("constructed the calculator")
     const resultOutput = document.getElementById("resultOutput");
+    if (!resultOutput) {
+        console.error("Output element not found.");
+        return;
+    }
+
     calculator.addListenerAndSetOutput(resultOutput);
+    console.log("added input listeners, ready for calculation")
 });
 
 class Calculator {
@@ -82,8 +89,8 @@ class Calculator {
         for (let op of operators) {
             while (formula.includes(op)) {
                 let index = formula.indexOf(op);
-                let left = this.elementIdToValue[formula[index - 1]];
-                let right = this.elementIdToValue[formula[index + 1]];
+                let left = this.elementIdToValue[formula[index - 1]] || 0;
+                let right = this.elementIdToValue[formula[index + 1]] || 0;
                 let result;
                 
                 switch (op) {
@@ -98,20 +105,18 @@ class Calculator {
                 
                 formula.splice(index - 1, 3, result);
             }
-        }
+        }        
         return formula[0];
     }
 
     addListenerAndSetOutput(output) {
-        if (!output) {
-            console.error("Output element not found.");
-            return;
+        for (let elemntId of this.ids) {
+            let element = document.getElementById(elemntId);
+            element.addEventListener("input", () => {
+                this.elementIdToValue[elemntId] = parseFloat(element.value) || 0;
+                output.value = this.calculate();
+            })
         }
-        
-        output.addEventListener("change", () => {
-            output.textContent = this.calculate();
-        });
-        output.textContent = this.calculate();
     }
     
     calculate() {

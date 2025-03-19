@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     let argumentsAndOperators = evaluator.match(/[a-zA-Z0-9_]+|[*/+\-()^@]/g);
+    console.log("the formula is ", argumentsAndOperators)
+
     if (!argumentsAndOperators) {
         console.error("Invalid formula syntax.");
         return;
@@ -55,6 +57,7 @@ class Calculator {
         this.ids = formula.filter((element) => {
             return !(operators.includes(element) || element === '(' || element === ')')
         })
+        console.log("elemnt ids are ", this.ids)
 
         this.elementIdToValue = new Map()
         for (let elementId of this.ids) {
@@ -62,7 +65,7 @@ class Calculator {
         }
     }
     
-    constructFormula(formula) {
+    constructFormula(formula, values) {
         while (formula.includes("(")) {
             let openIndex = -1;
             let closeIndex = -1;
@@ -89,8 +92,8 @@ class Calculator {
         for (let op of operators) {
             while (formula.includes(op)) {
                 let index = formula.indexOf(op);
-                let left = this.elementIdToValue[formula[index - 1]] || 0;
-                let right = this.elementIdToValue[formula[index + 1]] || 0;
+                let left = values.get(formula[index - 1]) || formula[index + 1] || 0;
+                let right = values.get(formula[index + 1]) || formula[index + 1] || 0;
                 let result;
                 
                 switch (op) {
@@ -102,8 +105,10 @@ class Calculator {
                     case "-": result = left - right; break;
                     default: console.error("Unknown operator: " + op); return null;
                 }
+                console.log(index, left, op, right, " = ", result)
                 
                 formula.splice(index - 1, 3, result);
+                console.log(formula)
             }
         }        
         return formula[0];
@@ -113,13 +118,14 @@ class Calculator {
         for (let elemntId of this.ids) {
             let element = document.getElementById(elemntId);
             element.addEventListener("input", () => {
-                this.elementIdToValue[elemntId] = parseFloat(element.value) || 0;
-                output.value = this.calculate();
+                this.elementIdToValue.set(element.id, parseFloat(element.value) || 0);
+                output.value = this.calculate(this.elementIdToValue);
             })
         }
     }
     
-    calculate() {
-        return this.constructFormula([...this.formula]);
+    calculate(values) {
+        console.log("calculating new formula for ", values)
+        return this.constructFormula([...this.formula], values);
     }
 }

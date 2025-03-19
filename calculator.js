@@ -24,15 +24,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    for (let argOrOp of argumentsAndOperators) {
+    for (let [index, argOrOp] of argumentsAndOperators.entries) {
         if (document.getElementById(argOrOp) != null) {
-            continue;
+            if (argumentsAndOperators[index + 1] != undefined && !operators.find(argumentsAndOperators[index + 1])) {
+                console.log("invalid formula syntax ", argOrOp, argumentsAndOperators[index + 1])
+            } else {
+                continue;
+            }
         } else if (operators.find((element) => argOrOp === element)) {
-            continue;
+            if (argumentsAndOperators[index + 1] != undefined && operators.find(argumentsAndOperators[index + 1])) {
+                console.log("invalid formula syntax ", argOrOp, argumentsAndOperators[index + 1])
+            } else if (index === 0) {
+                console.log("formula can not be started with an operand")
+            } else {
+                continue;
+            }
         } else if (argOrOp === '(' || argOrOp === ')') {
-            continue;
+            if (argumentsAndOperators[index + 1] != undefined && operators.find(argumentsAndOperators[index + 1]) && argOrOp === '(') {
+                console.log("invalid formula syntax ", argOrOp, argumentsAndOperators[index + 1])
+            } else if (argumentsAndOperators[index + 1] != undefined && !operators.find(argumentsAndOperators[index + 1]) && argOrOp === ')') {   
+                console.log("invalid formula syntax ", argOrOp, argumentsAndOperators[index + 1])
+            } else {
+                continue;
+            }
         } else {
-            console.error("Invalid elemnt ", argOrOp);
+            console.error("Invalid elemnt ", argOrOp, " in formula");
             return;
         }
     }

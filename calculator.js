@@ -66,6 +66,7 @@ class Calculator {
     }
     
     constructFormula(formula, values) {
+        console.log("start ", formula, " for ", values)
         while (formula.includes("(")) {
             let openIndex = -1;
             let closeIndex = -1;
@@ -84,16 +85,23 @@ class Calculator {
             }
             
             let innerExpression = formula.slice(openIndex + 1, closeIndex);
-            let innerResult = this.constructFormula(innerExpression);
+            let innerResult = this.constructFormula(innerExpression, values);
             formula.splice(openIndex, closeIndex - openIndex + 1, innerResult);
+            console.log("after ()", formula)
         }
         
         
         for (let op of operators) {
             while (formula.includes(op)) {
                 let index = formula.indexOf(op);
-                let left = values.get(formula[index - 1]) || formula[index + 1] || 0;
-                let right = values.get(formula[index + 1]) || formula[index + 1] || 0;
+                let left = values.get(formula[index - 1]);
+                if (left == null) {
+                    left = formula[index - 1];
+                }
+                let right = values.get(formula[index + 1]);
+                if (right == null) {
+                    right = formula[index + 1];
+                }
                 let result;
                 
                 switch (op) {

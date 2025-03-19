@@ -1,3 +1,6 @@
+operators = ["^", "@", "*", "/", "+", "-"];
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const formulas = document.getElementsByTagName("formula");
     if (formulas.length === 0) {
@@ -18,6 +21,21 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Invalid formula syntax.");
         return;
     }
+
+    for (let argOrOp of argumentsAndOperators) {
+        if (document.getElementById(argOrOp) != null) {
+            continue;
+        } else if (operators.find((element) => argOrOp === element)) {
+            continue;
+        } else if (argOrOp === '(' || argOrOp === ')') {
+            continue;
+        } else {
+            console.error("Invalid elemnt ", argOrOp);
+            return;
+        }
+    }
+
+    console.log("successfully validated entries")
     
     let calculator = new Calculator(argumentsAndOperators);
     const resultOutput = document.getElementById("resultOutput");
@@ -27,6 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
 class Calculator {
     constructor(formula) {
         this.formula = formula;
+        this.ids = formula.filter((element) => {
+            return !(operators.includes(element) || element === '(' || element === ')')
+        })
+
+        this.elementIdToValue = new Map()
+        for (let elementId of this.ids) {
+            this.elementIdToValue.set(elementId, 0)
+        }
     }
     
     constructFormula(formula) {
@@ -52,18 +78,17 @@ class Calculator {
             formula.splice(openIndex, closeIndex - openIndex + 1, innerResult);
         }
         
-        let operators = ["^", "@", "*", "/", "+", "-"];
         
         for (let op of operators) {
             while (formula.includes(op)) {
                 let index = formula.indexOf(op);
-                let left = parseFloat(formula[index - 1]);
-                let right = parseFloat(formula[index + 1]);
+                let left = this.elementIdToValue[formula[index - 1]];
+                let right = this.elementIdToValue[formula[index + 1]];
                 let result;
                 
                 switch (op) {
                     case "^": result = Math.pow(left, right); break;
-                    case "@": result = Math.sqrt(left); break;
+                    case "@": result = Math.pow(left, 1/right); break;
                     case "*": result = left * right; break;
                     case "/": result = left / right; break;
                     case "+": result = left + right; break;

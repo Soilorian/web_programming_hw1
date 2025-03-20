@@ -1,57 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stock profit calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-        <label for="numberInput" class="block text-gray-700 font-semibold">Enter a number:</label>
-        <input type="number" id="sellValue" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="buyValue" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="stockCount" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        
-        <label class="block text-gray-700 font-semibold mt-4">Result:</label>
-        <input 
-        type="number" 
+    <style>
+      body {
+        overflow: hidden;
+      }
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-gray-900">
+    <canvas id="stockChart"></canvas>
+
+    <script>
+      const canvas = document.getElementById("stockChart");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let gridSize = 50;
+      let speed = 2;
+      let x = 0;
+      let y = canvas.height / 2;
+      let amplitude = 50;
+      let prevY = y;
+      let reachedEnd = true;
+
+      function drawGrid() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "rgba(200, 200, 200, 0.2)";
+        ctx.lineWidth = 1;
+
+        for (let x = 0; x < canvas.width; x += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+          ctx.stroke();
+        }
+
+        for (let y = 0; y < canvas.height; y += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+          ctx.stroke();
+        }
+      }
+
+      function moveStock() {
+        x += speed;
+        let change = (Math.random() - 0.5) * amplitude;
+        prevY = y;
+        y = Math.max(50, Math.min(canvas.height - 50, y + change));
+
+        ctx.strokeStyle = y > prevY ? "red" : "green";
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+        ctx.moveTo(x - speed, prevY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        if (x > canvas.width) {
+          reachedEnd = true;
+        }
+      }
+
+      function animate() {
+        if (reachedEnd) {
+          drawGrid();
+          reachedEnd = false;
+          x = 0;
+        }
+        moveStock();
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    </script>
+
+    <div class="bg-blue-400 p-6 rounded-lg shadow-lg w-80">
+      <label for="stockCount" class="block text-gray-700 font-semibold opacity-100"
+        >number of stocks you bought</label
+      >
+      <input
+        type="number"
+        id="stockCount"
+        class="mt-2 w-full p-2 border rounded opacity-100"
+        placeholder="stock count..."
+      />
+
+      <label for="buyValue" class="block text-gray-700 font-semibold mt-5"
+        >Buying price</label
+      >
+      <input
+        type="number"
+        id="buyValue"
+        class="mt-2 w-full p-2 border rounded"
+        placeholder="buy price..."
+      />
+      <label for="sellValue" class="block text-gray-700 font-semibold"
+        >Selling price</label
+      >
+      <input
+        type="number"
+        id="sellValue"
+        class="mt-2 w-full p-2 border rounded"
+        placeholder="sell price..."
+      />
+
+      <label class="block text-gray-700 font-semibold mt-4">Result:</label>
+      <input
+        type="number"
         id="resultOutput"
         class="mt-2 w-full p-2 border rounded bg-gray-200 text-gray-700 transition-all duration-300"
         readonly
-        >
-        <script>
-            const sellInput = document.getElementById("sellValue")
-            const buyInput = document.getElementById("buyValue")
-            const stockInput = document.getElementById("stockCount")
-            const outputElement = document.getElementById("resultOutput")
-            prevOutput = parseFloat(outputElement.value)
+      />
+      <script>
+        const sellInput = document.getElementById("sellValue");
+        const buyInput = document.getElementById("buyValue");
+        const stockInput = document.getElementById("stockCount");
+        const outputElement = document.getElementById("resultOutput");
+        prevOutput = parseFloat(outputElement.value);
 
-            function updateResult() {
-                setTimeout(
-                    () => {
-                        let result = parseFloat(outputElement.value)
-                console.log("from html ", result)
-                if (result > 0) {
-                    const green = Math.max(60, Math.min(result * 0.6, 255))
-                    outputElement.style.backgroundColor = `rgb(0, ${green}, 0)`
-                } else if (result < 0) {
-                    const red = Math.max(60, Math.min(Math.abs(result) * 0.6, 255))
-                    outputElement.style.backgroundColor = `rgb(${red}, 0, 0)`
-                } else {
-                    outputElement.style.backgroundColor = "rgb(200, 200, 200)"
-                }
-                    }
-                , 100)
+        function updateResult() {
+          setTimeout(() => {
+            let result = parseFloat(outputElement.value);
+            if (result > 0) {
+              const green = Math.max(60, Math.min(result * 0.6, 255));
+              outputElement.style.backgroundColor = `rgb(0, ${green}, 0)`;
+            } else if (result < 0) {
+              const red = Math.max(60, Math.min(Math.abs(result) * 0.6, 255));
+              outputElement.style.backgroundColor = `rgb(${red}, 0, 0)`;
+            } else {
+              outputElement.style.backgroundColor = "rgb(200, 200, 200)";
             }
+          }, 100);
+        }
 
-            sellInput.addEventListener("input", updateResult)
-            buyInput.addEventListener("input", updateResult)
-            stockInput.addEventListener("input", updateResult)
-        </script>
-        <formula evaluator="(sellValue-buyValue)*stockCount"/>
+        sellInput.addEventListener("input", updateResult);
+        buyInput.addEventListener("input", updateResult);
+        stockInput.addEventListener("input", updateResult);
+      </script>
+      <formula evaluator="(sellValue-buyValue)*stockCount" />
     </div>
 
     <script src="calculator.js"></script>
-</body>
+  </body>
 </html>

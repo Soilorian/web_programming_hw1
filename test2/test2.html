@@ -1,93 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>war power calculator</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            background: url('background.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .sword-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Common sword styles */
-        .sword {
-            width: 10%;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: all 1s ease-in-out;
-        }
-
-        /* Left sword specific styles */
-        .sword-left {
-            left: -15%;
-        }
-
-        /* Right sword specific styles */
-        .sword-right {
-            right: -15%;
-            transform: scaleX(-1); /* Flip horizontally */
-        }
-
-        /* Animation keyframes */
-        @keyframes sword-move-left {
-            0% { left: -15%; }
-            50% { left: 45%; }
-            100% { left: 50%; top: 0; transform: translateY(-50%) scale(0.1); }
-        }
-
-        @keyframes sword-move-right {
-            0% { right: -15%; }
-            50% { right: 45%; }
-            100% { right: 50%; top: 0; transform: translateY(-50%) scale(0.1) scaleX(-1); }
-        }
-
-        /* Apply animations */
-        .sword-left.animate {
-            animation: sword-move-left 2s forwards;
-        }
-
-        .sword-right.animate {
-            animation: sword-move-right 2s forwards;
-        }
-    </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>War Power Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bgMusic" src="background.mp3" loop></audio>
     <div class="sword-container">
-        <!-- Left Sword -->
-        <img src="sword.svg" alt="Left Sword" class="sword sword-left" id="leftSword">
-        <!-- Right Sword -->
-        <img src="sword.svg" alt="Right Sword" class="sword sword-right" id="rightSword">
+      <img
+        src="sword.svg"
+        alt="Left Sword"
+        class="sword sword-left"
+        id="leftSword"
+      />
+      <img
+        src="sword_right.svg"
+        alt="Right Sword"
+        class="sword sword-right"
+        id="rightSword"
+      />
     </div>
 
-    <script>
-        // Wait for the DOM to load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Select sword elements
-            const leftSword = document.getElementById('leftSword');
-            const rightSword = document.getElementById('rightSword');
+    <div class="bg-yellow-400/50 p-6 rounded-lg shadow-lg w-11/12 max-w-3xl mx-auto mt-6 input-container" id="inputContainer">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div>
+          <label for="troopCount" class="block text-gray-900 font-semibold">Troop Count</label>
+          <input type="number" id="troopCount" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter count..." />
+        </div>
+        <div>
+          <label for="troopPower" class="block text-gray-900 font-semibold">Troop Power</label>
+          <input type="number" id="troopPower" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter power..." />
+        </div>
+        <div>
+          <label for="troopLevel" class="block text-gray-900 font-semibold">Troop Level</label>
+          <input type="number" id="troopLevel" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter level..." />
+        </div>
+        <div>
+          <label for="ragePower" class="block text-gray-900 font-semibold">Rage Power</label>
+          <input type="number" id="ragePower" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter power..." />
+        </div>
+        <div>
+          <label for="rageLevel" class="block text-gray-900 font-semibold">Rage Level</label>
+          <input type="number" id="rageLevel" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter level..." />
+        </div>
+        <div>
+          <label for="poisonLevel" class="block text-gray-900 font-semibold">Poison Level</label>
+          <input type="number" id="poisonLevel" class="mt-2 w-full p-2 border rounded bg-white text-gray-900" placeholder="Enter level..." />
+        </div>
+      </div>
+      <div class="mt-4">
+        <label class="block text-gray-900 font-semibold">Result:</label>
+        <input type="number" id="resultOutput" class="mt-2 w-full p-2 border rounded bg-gray-200 text-gray-700 transition-all duration-300" readonly />
+      </div>
 
-            // Add 'animate' class to trigger animations
-            setTimeout(() => {
-                leftSword.classList.add('animate');
-                rightSword.classList.add('animate');
-            }, 500); // Delay to ensure smooth animation start
-        });
-    </script>
-</body>
+      <formula evaluator="troopCount*(troopLevel+troopPower)+ragePower^rageLevel-poisonLevel" />
+    </div>
+
+    <script src="swordMovement.js"></script>
+    <script src="../calculator.js"></script>
+  </body>
 </html>

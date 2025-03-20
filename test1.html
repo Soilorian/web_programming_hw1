@@ -25,9 +25,13 @@
             const buyInput = document.getElementById("buyValue")
             const stockInput = document.getElementById("stockCount")
             const outputElement = document.getElementById("resultOutput")
+            prevOutput = parseFloat(outputElement.value)
 
             function updateResult() {
-                let result = parseInt(outputElement.value);
+                setTimeout(
+                    () => {
+                        let result = parseFloat(outputElement.value)
+                console.log("from html ", result)
                 if (result > 0) {
                     const green = Math.max(60, Math.min(result * 0.6, 255))
                     outputElement.style.backgroundColor = `rgb(0, ${green}, 0)`
@@ -37,6 +41,8 @@
                 } else {
                     outputElement.style.backgroundColor = "rgb(200, 200, 200)"
                 }
+                    }
+                , 100)
             }
 
             sellInput.addEventListener("input", updateResult)

@@ -87,7 +87,7 @@ class Calculator {
             let openIndex = -1
             let closeIndex = -1
             
-            for (let i = 0 i < formula.length i++) {
+            for (let i = 0; i < formula.length; i++) {
                 if (formula[i] === "(") openIndex = i
                 if (formula[i] === ")" && openIndex !== -1) {
                     closeIndex = i
@@ -121,13 +121,13 @@ class Calculator {
                 let result
                 
                 switch (op) {
-                    case "^": result = Math.pow(left, right) break
-                    case "@": result = Math.pow(left, 1/right) break
-                    case "*": result = left * right break
-                    case "/": result = left / right break
-                    case "+": result = left + right break
-                    case "-": result = left - right break
-                    default: console.error("Unknown operator: " + op) return null
+                    case "^": result = Math.pow(left, right); break
+                    case "@": result = Math.pow(left, 1/right); break
+                    case "*": result = left * right; break
+                    case "/": result = left / right; break
+                    case "+": result = left + right; break
+                    case "-": result = left - right; break
+                    default: console.error("Unknown operator: " + op); return null
                 }
                 console.log(index, left, op, right, " = ", result)
                 

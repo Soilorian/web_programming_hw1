@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>war power calculator</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .sword-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Common sword styles */
+        .sword {
+            width: 10%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 1s ease-in-out;
+        }
+
+        /* Left sword specific styles */
+        .sword-left {
+            left: -15%;
+        }
+
+        /* Right sword specific styles */
+        .sword-right {
+            right: -15%;
+            transform: scaleX(-1); /* Flip horizontally */
+        }
+
+        /* Animation keyframes */
+        @keyframes sword-move-left {
+            0% { left: -15%; }
+            50% { left: 45%; }
+            100% { left: 50%; top: 0; transform: translateY(-50%) scale(0.1); }
+        }
+
+        @keyframes sword-move-right {
+            0% { right: -15%; }
+            50% { right: 45%; }
+            100% { right: 50%; top: 0; transform: translateY(-50%) scale(0.1) scaleX(-1); }
+        }
+
+        /* Apply animations */
+        .sword-left.animate {
+            animation: sword-move-left 2s forwards;
+        }
+
+        .sword-right.animate {
+            animation: sword-move-right 2s forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="sword-container">
+        <!-- Left Sword -->
+        <img src="sword.svg" alt="Left Sword" class="sword sword-left" id="leftSword">
+        <!-- Right Sword -->
+        <img src="sword.svg" alt="Right Sword" class="sword sword-right" id="rightSword">
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select sword elements
+            const leftSword = document.getElementById('leftSword');
+            const rightSword = document.getElementById('rightSword');
+
+            // Add 'animate' class to trigger animations
+            setTimeout(() => {
+                leftSword.classList.add('animate');
+                rightSword.classList.add('animate');
+            }, 500); // Delay to ensure smooth animation start
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stock profit calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="flex items-center justify-center h-screen bg-gray-900">
+    <canvas id="stockChart"></canvas>
+    <script src="background.js"></script>
+
+    <div class="bg-blue-400/50 p-6 rounded-lg shadow-lg w-1/2 max-w-2xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="col-span-1 sm:col-span-2">
+          <label for="stockCount" class="block text-gray-900 font-semibold"
+            >Number of stocks you bought</label
+          >
+          <input
+            type="number"
+            id="stockCount"
+            class="mt-2 w-full p-2 border rounded bg-white text-gray-900"
+            placeholder="Stock count..."
+          />
+        </div>
+
+        <div>
+          <label for="buyValue" class="block text-gray-900 font-semibold"
+            >Buying Price</label
+          >
+          <input
+            type="number"
+            id="buyValue"
+            class="mt-2 w-full p-2 border rounded bg-white text-gray-900"
+            placeholder="Buy price..."
+          />
+        </div>
+        <div>
+          <label for="sellValue" class="block text-gray-900 font-semibold"
+            >Selling Price</label
+          >
+          <input
+            type="number"
+            id="sellValue"
+            class="mt-2 w-full p-2 border rounded bg-white text-gray-900"
+            placeholder="Sell price..."
+          />
+        </div>
+      </div>
+      <label class="block text-gray-900 font-semibold mt-4">Result:</label>
+      <input
+        type="number"
+        id="resultOutput"
+        class="mt-2 w-full p-2 border rounded bg-gray-200 text-gray-700 transition-all duration-300"
+        readonly
+      />
+
+      <script src="changeColor.js"></script>
+      <formula evaluator="(sellValue-buyValue)*stockCount" />
+    </div>
+
+    <script src="../calculator.js"></script>
+  </body>
+</html>

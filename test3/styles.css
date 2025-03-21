@@ -1,0 +1,23 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    text-align: center;
+    transition: background 0.3s, color 0.3s;
+}
+  .dark body {
+    background-color: #222;
+    color: white;
+}
+
+
+  .slider::before {
+    transition: 0.5s;
+  }
+  
+  input:checked + .slider::before {
+    transform: translateX(1.5rem);
+    background: white;
+  }
+  

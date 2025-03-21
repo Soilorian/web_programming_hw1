@@ -1,25 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiply Input by 2</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Equation Solver</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-        <label for="numberInput" class="block text-gray-700 font-semibold">Enter a number:</label>
-        <input type="number" id="a" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="b" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="c" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="d" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        <input type="number" id="e" class="mt-2 w-full p-2 border rounded" placeholder="Type a number...">
-        
-        <label class="block text-gray-700 font-semibold mt-4">Result:</label>
-        <input type="text" id="resultOutput" class="mt-2 w-full p-2 border rounded bg-gray-200 text-gray-700" readonly>
-        <formula evaluator="(a+b)*c"/>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-white text-black transition-all duration-300">
+
+    <div class="absolute top-4 right-4 flex items-center space-x-2">
+      <span class="text-sm">Dark</span>
+      <label class="relative inline-block w-14 h-8">
+        <input type="checkbox" id="themeToggle" class="hidden" />
+        <span
+          class="slider block bg-gray-300 w-full h-full rounded-full before:absolute before:content-[''] before:w-6 before:h-6 before:bg-black before:rounded-full before:top-1 before:left-1 before:transition-all"
+        ></span>
+      </label>
+      <span class="text-sm">Light</span>
     </div>
 
-    <script src="calculator.js"></script>
-</body>
+    <div
+      class="bg-gray-200 dark:bg-gray-800 text-black dark:text-white p-6 rounded-lg shadow-lg w-full max-w-xl mx-auto mt-20"
+    >
+      <h1 class="text-center text-2xl font-bold mb-4">Equation Solver</h1>
+
+      <div class="text-center text-xl font-semibold mb-4">
+        a * x<sup>b</sup> + c = d
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-lg">
+        <div class="flex items-center">
+          <label for="a" class="mr-2">a =</label>
+          <input
+            type="number"
+            id="a"
+            placeholder="a"
+            class="p-2 text-center bg-gray-300 dark:bg-gray-700 rounded flex-1 w-2/5 max-w-xl"
+          />
+        </div>
+        <div class="flex items-center">
+          <label for="b" class="mr-2">b =</label>
+          <input
+            type="number"
+            id="b"
+            placeholder="b"
+            class="p-2 text-center bg-gray-300 dark:bg-gray-700 rounded flex-1 w-2/5 max-w-xl"
+          />
+        </div>
+        <div class="flex items-center">
+          <label for="c" class="mr-2">c =</label>
+          <input
+            type="number"
+            id="c"
+            placeholder="c"
+            class="p-2 text-center bg-gray-300 dark:bg-gray-700 rounded flex-1 w-2/5 max-w-xl"
+          />
+        </div>
+        <div class="flex items-center">
+          <label for="d" class="mr-2">d =</label>
+          <input
+            type="number"
+            id="d"
+            placeholder="d"
+            class="p-2 text-center bg-gray-300 dark:bg-gray-700 rounded flex-1 w-2/5 max-w-xl"
+          />
+        </div>
+      </div>
+
+      <div class="mt-4 text-center text-xl font-semibold">
+        x =
+        <input
+          type="number"
+          id="resultOutput"
+          placeholder="..."
+          class="w-2/5 p-2 text-center bg-gray-300 dark:bg-gray-700 rounded"
+          readonly
+        />
+      </div>
+    </div>
+
+    <formula evaluator="((d-c)/a)@b" />
+    <script src="darkmode.js"></script>
+    <script src="../calculator.js"></script>
+  </body>
 </html>

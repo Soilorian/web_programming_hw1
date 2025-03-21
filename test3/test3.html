@@ -7,21 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="bg-white text-black transition-all duration-300">
+
+  <body class="bg-gray-300 text-black transition-all duration-300">
 
     <div class="absolute top-4 right-4 flex items-center space-x-2">
-      <span class="text-sm">Dark</span>
+      <span class="text-sm">Light</span>
       <label class="relative inline-block w-14 h-8">
         <input type="checkbox" id="themeToggle" class="hidden" />
         <span
           class="slider block bg-gray-300 w-full h-full rounded-full before:absolute before:content-[''] before:w-6 before:h-6 before:bg-black before:rounded-full before:top-1 before:left-1 before:transition-all"
         ></span>
       </label>
-      <span class="text-sm">Light</span>
+      <span class="text-sm">Dark</span>
     </div>
 
     <div
-      class="bg-gray-200 dark:bg-gray-800 text-black dark:text-white p-6 rounded-lg shadow-lg w-full max-w-xl mx-auto mt-20"
+      class="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-full max-w-xl mx-auto mt-20"
     >
       <h1 class="text-center text-2xl font-bold mb-4">Equation Solver</h1>
 
